@@ -66,6 +66,10 @@ class Post(models.Model):
     # 这里我们通过 ForeignKey 把文章和 User 关联了起来。
     # 因为我们规定一篇文章只能有一个作者，而一个作者可能会写多篇文章，因此这是一对多的关联关系，和 Category 类似。
     author = models.ForeignKey(User)
+
+    # 新增 views 字段记录阅读量
+    views = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.title
 
@@ -73,5 +77,36 @@ class Post(models.Model):
     # 记得从 django.urls 中导入 reverse 函数
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    # 文章阅读量计数
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])  
+
     class Meta:
         ordering = ['-created_time']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

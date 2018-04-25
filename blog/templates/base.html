@@ -1,155 +1,211 @@
 {% load staticfiles %}
 {% load blog_tags %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Black &amp; White</title>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!--<link rel="icon" href="../../../../favicon.ico">-->
 
-    <!-- meta -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>LetonBlog</title>
+        <!-- css -->
 
-    <!-- css -->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <!-- static -->
-    <link rel="stylesheet" href="{% static 'blog/css/pace.css'%}">
-    <link rel="stylesheet" href="{% static 'blog/css/custom.css'%}">
-    <link rel="stylesheet" href="{% static 'blog/css/highlights/github.css'%}">
+        <!-- Bootstrap core CSS -->
+		<link href="{% static 'blog/css/bootstrap.min.css'%}" rel="stylesheet">
+        <!-- <link href="{% static 'blog/css/custom.css'%}" rel="stylesheet"> -->
+        <!-- github highlights -->
+        <link rel="stylesheet" href="{% static 'blog/css/highlights/github.css'%}">
+        <link rel="stylesheet" href="{% static 'blog/css/pace.css'%}">
+        <link rel="stylesheet" href="{% static 'blog/css/custom.css'%}">
 
+        <!-- Custom styles for this template -->
+        <link href="{% static 'blog/letonsoft/css/letonblog.css'%}" rel="stylesheet">
+        <link href="{% static 'blog/letonsoft/css/github-markdown.css'%}" rel="stylesheet">
+        <style>
+        span.highlighted {
+            color: red;
+        }
+        </style>
 
-    <!-- js -->
-    <script src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- static -->
-    <script src="{% static 'blog/js/pace.min.js' %}"></script>
-    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+    </head>
 
-</head>
+    <body class="bg-light">
+        <div class="bg-dark">
+            <nav class="container navbar navbar-expand-md navbar-dark mb-2">
+                <a class="navbar-brand" href="{% url 'blog:index' %}">LETONSOFT</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-<body>
-<div class="container">
-    <header id="site-header">
-        <div class="row">
-            <div class="col-md-4 col-sm-5 col-xs-8">
-                <div class="logo">
-                    <h1><a href="{% url 'blog:index' %}"><b>Leton</b>Soft</a></h1>
+                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'blog:index' %}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Archives</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                <a class="dropdown-item" href="#">VPS</a>
+                                <a class="dropdown-item" href="#">Ubuntu</a>
+                                <a class="dropdown-item" href="#">Docker</a>
+                                <a class="dropdown-item" href="#">Nginx</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline ml-4 my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                    </form>
                 </div>
-            </div><!-- col-md-4 -->
-            <div class="col-md-8 col-sm-7 col-xs-4">
-                <nav class="main-nav" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" id="trigger-overlay" class="navbar-toggle">
-                            <span class="ion-navicon"></span>
-                        </button>
+            </nav>
+        </div>
+
+
+        <main role="main" class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% block main %}
+
+                    {% endblock main %}
+                </div>
+
+                <!-- sidebar -->
+                <aside class="col-md-4 blog-sidebar">
+                    <!-- tags -->
+                    <div class="my-3 bg-white rounded box-shadow">
+                        <!-- Categories title -->
+                        <h6 class="border-bottom border-gray p-3 mb-0">最新文章</h6>
+                        <!-- Categories -->
+                        <div class="media text-muted">
+                            {% get_recent_posts as recent_post_list %}
+                            <ul class="list-unstyled  mb-0 p-3">
+                                {% for post in recent_post_list %}
+                                        <li>
+                                          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                        </li>
+                                    {% empty %}
+                                        <li>暂无文章!</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- archives -->
+                    <div class="my-3 bg-white rounded box-shadow">
+                        <!-- archives title -->
+                        <h6 class="border-bottom border-gray p-3 mb-0">Archives</h6>
+                        
+                        <!-- date -->
+                        <div class="media text-muted">
+                            {% archives as date_list %}
+                            <ul class="list-unstyled  mb-0 p-3">
+                                {% for date in date_list %}
+                                    <li>
+                                      <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }} 年 {{ date.month }} 月</a>
+                                    </li>
+                                    {% empty %}
+                                    <li>暂无归档</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="cl-effect-11"><a href="{% url 'blog:index' %}" data-hover="首页">首页</a></li>
-                            <li class="cl-effect-11"><a href="full-width.html" data-hover="博客">博客</a></li>
-                            <li class="cl-effect-11"><a href="about.html" data-hover="关于">关于</a></li>
-                            <li class="cl-effect-11"><a href="contact.html" data-hover="联系">联系</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </nav>
-                <div id="header-search-box">
-                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
-                    <div id="search-form" class="search-form">
-                        <form role="search" method="get" id="searchform" action="#">
-                            <input type="search" placeholder="搜索" required>
-                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
-                        </form>
+                    <!-- tags -->
+                    <div class="my-3 bg-white rounded box-shadow">
+                        <!-- Categories title -->
+                        <h6 class="border-bottom border-gray p-3 mb-0">Categories</h6>
+                        <!-- Categories -->
+                        <div class="media text-muted">
+                            {% get_categories as category_list %}
+                            <ul class="list-unstyled  mb-0 p-3">
+                                {% for category in category_list %}
+                                <li>
+                                    <a href="{% url 'blog:category' category.pk %}">{{ category.name }}
+                                        <span class="post-count">({{ category.num_posts }})</span>
+                                    </a>
+                                </li>
+                                {% empty %}
+                                <li>暂无分类！</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
                     </div>
-                </div>
-            </div><!-- col-md-8 -->
-        </div>
-    </header>
-</div>
-<div class="copyrights">Collect from <a href="http://www.cssmoban.com/">网页模板</a></div>
-<div class="copyrights">Modified by <a href="http://zmrenwu.com/">追梦人物的博客</a></div>
+                    <!--TOC-->
+                    {% block toc %}
 
-<div class="content-body">
-    <div class="container">
-        <div class="row">
-            <main class="col-md-8">
-                {% block main %}
-
-                {% endblock main %}
-            </main>
-            <aside class="col-md-4">
-                <div class="widget widget-recent-posts">
-                  <h3 class="widget-title">最新文章</h3>
-                  {% get_recent_posts as recent_post_list %}
-                  <ul>
-                    {% for post in recent_post_list %}
-                    <li>
-                      <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                    </li>
-                    {% empty %}
-                    暂无文章！
-                    {% endfor %}
-                  </ul>
-                </div>
-                <div class="widget widget-archives">
-                  <h3 class="widget-title">归档</h3>
-                  {% archives as date_list %}
-                  <ul>
-                    {% for date in date_list %}
-                    <li>
-                      <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }} 年 {{ date.month }} 月</a>
-                    </li>
-                    {% empty %}
-                    暂无归档！
-                    {% endfor %}
-                  </ul>
-                </div>
-                <div class="widget widget-category">
-                  <h3 class="widget-title">分类</h3>
-                  {% get_categories as category_list %}
-                  <ul>
-                    {% for category in category_list %}
-                    <li>
-                        <a href="{% url 'blog:category' category.pk %}">{{ category.name }}</a>
-                    </li>
-                    {% empty %}
-                    暂无分类！
-                    {% endfor %}
-                  </ul>
-                </div>
-                {% block toc %}
-                {% endblock toc %}
-            </aside>
-        </div>
-    </div>
-</div>
-<footer id="site-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="copyright">&copy 2017 - 采集自<a href="http://www.cssmoban.com/"
-                                                        target="_blank" title="模板之家">模板之家</a>
-                    - 由<a href="http://zmrenwu.com/" title="网页模板" target="_blank">追梦人物的博客</a>修改
-                </p>
+                    {% endblock toc %}
+                    <!-- Tags -->
+                    <div class="my-3 bg-white rounded box-shadow">
+                        <!--  title -->
+                        <h6 class="border-bottom border-gray p-3 mb-0">Tags</h6>
+                        <!-- list -->
+                        <div class="media text-muted">
+                            {% get_tags as tags_list %}
+                            <ul class="list-unstyled  mb-0 p-3">
+                                {% for tag in tags_list %}
+                                <li>
+                                    <a href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}
+                                        <span class="post-count">({{ tag.num_posts }})</span>
+                                    </a>
+                                </li>
+                                {% empty %}
+                                <li>暂无标签！</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 订阅rss -->
+                    <div class="my-3 bg-white rounded box-shadow">
+                        <!--  title -->
+                        <h6 class="border-bottom border-gray p-3 mb-0">订阅</h6>
+                        <!-- list -->
+                        <div class="media text-muted">
+                            <ul class="list-unstyled  mb-0 p-3">
+                                <li>
+                                    <a href="{% url 'blog:rss' %}">RSS 订阅</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside><!-- /.blog-sidebar -->
             </div>
-        </div>
-    </div>
-</footer>
-
-<!-- Mobile Menu -->
-<div class="overlay overlay-hugeinc">
-    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
-    <nav>
-        <ul>
-            <li><a href="index.html">首页</a></li>
-            <li><a href="full-width.html">博客</a></li>
-            <li><a href="about.html">关于</a></li>
-            <li><a href="contact.html">联系</a></li>
-        </ul>
-    </nav>
-</div>
-
-<script src="{% static 'blog/js/script.js' %}"></script>
-
-</body>
+        </main>
+        <footer class="blog-footer mt-2">
+            <p> Made by <a href="http://blog.letonsoft.com">Letonsoft.com</a> &copy; 2018</p>
+            <p>
+                <a href="#">Back to top</a>
+            </p>
+        </footer>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="'+"{% static 'blog/js/vendor/jquery-slim.min.js'%}" +'><\/script>')</script>
+        <script src="{% static 'blog/js/vendor/popper.min.js'%}"></script>
+        <script src="{% static 'blog/js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'blog/js/vendor/holder.min.js'%}"></script>
+        <script src="{% static 'blog/letonsoft/js/letonblog.js'%}"></script>
+        <!--<script>-->
+            <!--$(document).ready(function(){-->
+                <!--$(#search).keydown(function(event){-->
+                    <!--if(event.keyCode == 13){-->
+                        <!--alert("start search");-->
+                    <!--}-->
+                <!--})-->
+            <!--})-->
+            <!--$(document).ready(function(){-->
+                <!--&lt;!&ndash;$("#toc").addClass("media text-muted");&ndash;&gt;-->
+                <!--&lt;!&ndash;$("#toc>ul").addClass("list-unstyled  mb-0 p-3");&ndash;&gt;-->
+                <!--alert($("#toc>ul").innerHTML());-->
+            <!--})-->
+        <!--</script>-->
+    </body>
 </html>

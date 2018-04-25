@@ -1,0 +1,8 @@
+from settings.defaults import *
+DEBUG = False
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'blog.letonsoft.com']
+
+with open('/home/leton/sites/blog.letonsoft.com/keys/SECRET_KEY.txt') as f:
+    SECRET_KEY = f.read().strip()
+

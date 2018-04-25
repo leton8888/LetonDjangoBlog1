@@ -18,3 +18,5 @@ tests/.coverage
 build/
 tests/report/
 .idea/
+settings/production.py
+settings/dev.py

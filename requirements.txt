@@ -8,4 +8,5 @@ protobuf==3.5.1
 Pygments==2.2.0
 pytz==2018.3
 six==1.11.0
+virtualenv==15.2.0
 Werkzeug==0.14.1

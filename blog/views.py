@@ -186,7 +186,14 @@ class PostDetailView(DetailView):
           TocExtension(slugify=slugify),
       ])
       post.body = md.convert(post.body)
-      post.toc = md.toc
+      tocnull = """<div class="toc">
+<ul></ul>
+</div>
+"""
+      if md.toc == tocnull:
+          post.toc = ""
+      else:
+          post.toc = md.toc
       return post
 
   def get_context_data(self, **kwargs):

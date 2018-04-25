@@ -1,0 +1,4 @@
+from settings.defaults import *
+
+DEBUG = True
+SECRET_KEY = 'hkcca8*=au3h%8df%dp90w%ew*-nn9@m(veh0c18p6o^)t*5rw'

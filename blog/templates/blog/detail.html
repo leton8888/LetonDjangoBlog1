@@ -24,7 +24,7 @@
 </div>
 {% endblock main %}
 {% block toc %}
-    {% if post.toc %}
+    {% if post.toc|length > 0 %}
     <div class="my-3 bg-white rounded box-shadow">
 
         <h6 class="border-bottom border-gray p-3 mb-0">文章目录</h6>
